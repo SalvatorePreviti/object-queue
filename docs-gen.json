@@ -1,0 +1,6 @@
+{
+  "project": ".",
+  "entryFile": "index.ts",
+  "output": "documentation",
+  "excludePrivateApi": true
+}
