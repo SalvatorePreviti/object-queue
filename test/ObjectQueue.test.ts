@@ -262,4 +262,106 @@ describe('ObjectQueue', () => {
       expect(q.toArray()).toEqual(entries)
     })
   })
+
+  describe('toSet', () => {
+    it('returns an empty set for an empty queue', () => {
+      const q = new ObjectQueue()
+      expect(q.toSet()).toEqual(new Set())
+    })
+
+    it('returns a set with one item', () => {
+      const q = new ObjectQueue()
+      const entry = { x: 1 }
+      q.enqueue(entry)
+      expect(q.toSet()).toEqual(new Set([entry]))
+    })
+
+    it('returns an array with multiple items', () => {
+      const q = new ObjectQueue()
+      const entries = [{ a: 1 }, { a: 2 }, { a: 3 }]
+      for (const entry of entries) {
+        q.enqueue(entry)
+      }
+      expect(q.toSet()).toEqual(new Set(entries))
+    })
+  })
+
+  describe('enqueueMany', () => {
+    const q = new ObjectQueue<{ x: number }>()
+
+    const entries = [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }]
+    entries.push(entries[0])
+    entries.push(entries[3])
+
+    expect(q.enqueueMany(entries)).toBe(entries.length - 2)
+    expect(q.toArray()).toEqual(entries.slice(0, entries.length - 2))
+  })
+
+  describe('delete', () => {
+    it('returns false with a non existing entry', () => {
+      const q = new ObjectQueue<{ x: number }>()
+      const entries = [{ x: 0 }, { x: 1 }, { x: 2 }, { x: 3 }]
+      q.enqueueMany(entries)
+      expect(q.delete({ x: -1 })).toBe(false)
+      expect(q.toArray()).toEqual(entries)
+    })
+
+    it('deletes the head', () => {
+      const q = new ObjectQueue<{ x: number }>()
+      const entries = [{ x: 0 }, { x: 1 }, { x: 2 }, { x: 3 }]
+      q.enqueueMany(entries)
+      expect(q.delete(entries[0])).toBe(true)
+      expect(q.delete(entries[0])).toBe(false)
+      expect(q.toArray()).toEqual([entries[1], entries[2], entries[3]])
+      expect(q.size).toBe(entries.length - 1)
+      expect(q.head).toBe(entries[1])
+      expect(q.tail).toBe(entries[3])
+      expect(q.getNext(entries[0])).toBe(null)
+    })
+
+    it('deletes the tail', () => {
+      const q = new ObjectQueue<{ x: number }>()
+      const entries = [{ x: 0 }, { x: 1 }, { x: 2 }, { x: 3 }]
+      q.enqueueMany(entries)
+      expect(q.delete(entries[3])).toBe(true)
+      expect(q.delete(entries[3])).toBe(false)
+      expect(q.toArray()).toEqual([entries[0], entries[1], entries[2]])
+      expect(q.size).toBe(entries.length - 1)
+      expect(q.head).toBe(entries[0])
+      expect(q.tail).toBe(entries[2])
+      expect(q.getNext(entries[3])).toBe(null)
+    })
+
+    it('deletes an element in the middle', () => {
+      const q = new ObjectQueue<{ x: number }>()
+      const entries = [{ x: 0 }, { x: 1 }, { x: 2 }, { x: 3 }]
+      q.enqueueMany(entries)
+      expect(q.delete(entries[2])).toBe(true)
+      expect(q.delete(entries[2])).toBe(false)
+      expect(q.toArray()).toEqual([entries[0], entries[1], entries[3]])
+      expect(q.size).toBe(entries.length - 1)
+      expect(q.getNext(entries[2])).toBe(null)
+    })
+
+    it('can delete the whole queue', () => {
+      const q = new ObjectQueue<{ x: number }>()
+      const entries = [{ x: 0 }, { x: 1 }, { x: 2 }, { x: 3 }]
+      q.enqueueMany(entries)
+      expect(q.delete(entries[2])).toBe(true)
+      expect(q.delete(entries[1])).toBe(true)
+      expect(q.delete(entries[3])).toBe(true)
+      expect(q.delete(entries[0])).toBe(true)
+      expect(q.delete(entries[2])).toBe(false)
+      expect(q.delete(entries[1])).toBe(false)
+      expect(q.delete(entries[3])).toBe(false)
+      expect(q.delete(entries[0])).toBe(false)
+      expect(q.toArray()).toEqual([])
+      expect(q.size).toBe(0)
+      expect(q.head).toBeNull()
+      expect(q.tail).toBeNull()
+      for (const entry of entries) {
+        expect(q.getNext(entry)).toBe(null)
+      }
+    })
+  })
 })

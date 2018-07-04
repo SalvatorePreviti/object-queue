@@ -11,6 +11,17 @@
     "sourceType": "module"
   },
   "rules": {
+    "padding-line-between-statements": [
+      "warn",
+      { "blankLine": "always", "prev": "directive", "next": "*" },
+      { "blankLine": "always", "prev": "function", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "function" },
+      { "blankLine": "always", "prev": "class", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "class" },
+      { "blankLine": "always", "prev": "*", "next": "cjs-export" },
+      { "blankLine": "always", "prev": "cjs-export", "next": "*" }
+    ],
+    "lines-between-class-members": ["warn", "always"],
     "valid-jsdoc": "warn",
     "no-console": "warn",
     "node/shebang": "off",

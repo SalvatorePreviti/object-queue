@@ -18,25 +18,42 @@ npm install --save object-queue
     -   [head](#head)
     -   [tail](#tail)
     -   [size](#size)
-    -   [nextSymbol](#nextsymbol)
     -   [has](#has)
         -   [Parameters](#parameters)
     -   [getNext](#getnext)
         -   [Parameters](#parameters-1)
     -   [enqueue](#enqueue)
         -   [Parameters](#parameters-2)
+    -   [enqueueMany](#enqueuemany)
+        -   [Parameters](#parameters-3)
     -   [dequeue](#dequeue)
     -   [clear](#clear)
+    -   [delete](#delete)
+        -   [Parameters](#parameters-4)
     -   [toArray](#toarray)
+    -   [toSet](#toset)
+    -   [iterator](#iterator)
 
 ## ObjectQueue
 
-A simple queue for objects based on a singly linked list.
+A simple and high performance queue for objects based on a singly linked list.
+It acts like a Set, the same entry cannot exists twice in the queue.
+Entries must be reference types (objects or functions).
 All the basic operations are O(1).
+
+Note: This queue works by setting a private symbol property to
+the target object. If you don't dequeue all the elements or don't
+clear the queue after you finish using it or the entries,
+the link between entries will not be garbage collected.
+This may create memory leaks.
+
+Note: Despite the fact that this queue is iterable,
+modifying the queue while iterating is unsafe
+(it may break the queue, enter infinite loops, create memory leaks).
 
 ### head
 
-Property: The head of the queue, the first element.
+Readonly Property: The head of the queue, the first element.
 
 Contains the next item to be dequeued.
 
@@ -44,7 +61,7 @@ Type: ([Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### tail
 
-Property: The tail of the queue, the last element.
+Readonly Property: The tail of the queue, the last element.
 
 Contains the last item to be dequeued.
 
@@ -52,15 +69,9 @@ Type: (Entry | null)
 
 ### size
 
-Property: The number of items in the queue.
+Readonly Property: The number of items in the queue.
 
 Type: [number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)
-
-### nextSymbol
-
-Property: The symbol used to read or write the 'next' property in the Entry object
-
-Type: [Symbol](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 
 ### has
 
@@ -78,6 +89,10 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Given an element in the queue, returns the next element.
 Returns null if the element is not owned by the queue or is the last element.
+
+Note: Despite the fact that this queue is iterable,
+modifying the queue while iterating is unsafe
+(it may break the queue, enter infinite loops, create memory leaks).
 
 Complexity is O(1)
 
@@ -100,6 +115,18 @@ Complexity is O(1).
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** True if entry was enqueued, false if not
 
+### enqueueMany
+
+Enqueues many entries in one single call.
+
+Returns the number of enqueued entries.
+
+#### Parameters
+
+-   `entries` **Iterable&lt;Entry>** The iterable of entries to enqueue.
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** The number of enqueued entries.
+
 ### dequeue
 
 Removes an entry from the queue.
@@ -115,7 +142,22 @@ Empties the queue.
 
 Complexity is O(n).
 
-Returns **void** 
+Returns **[undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined)** 
+
+### delete
+
+Removes an element from the queue.
+
+Since this operation have to loop all entries in the queue,
+try to avoid deleting elements.
+
+Complexity is O(n).
+
+#### Parameters
+
+-   `entry` **(Entry | null | [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** The entry to remove
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** True if entry was removed during this call, false if invalid or not found.
 
 ### toArray
 
@@ -124,3 +166,21 @@ Copies all items in the queue in a new array and returns it.
 Complexity is O(n).
 
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Entry>** An array that contains all entries in the queue.
+
+### toSet
+
+Copies all items in the queue in a new Set and returns it.
+
+Complexity is O(n).
+
+Returns **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;Entry>** A set that contains all entries in the queue.
+
+### iterator
+
+Iterates all elements in the queue, from head to tail.
+
+Note: Despite the fact that this queue is iterable,
+modifying the queue while iterating is unsafe
+(it may break the queue, enter infinite loops, create memory leaks).
+
+Returns **Iterator&lt;Entry>** An iterable iterator that can be used to iterate all entries.
