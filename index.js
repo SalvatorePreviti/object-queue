@@ -117,12 +117,11 @@ class ObjectQueue {
     }
     const tail = this.tail
     if (tail === null) {
-      this.tail = entry
       this.head = entry
     } else {
       tail[nextSymbol] = entry
-      this.tail = tail[nextSymbol]
     }
+    this.tail = entry
     entry[nextSymbol] = null
     ++this.size
     return true

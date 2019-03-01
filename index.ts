@@ -119,12 +119,11 @@ class ObjectQueue<Entry = any> implements Iterable<Entry> {
 
     const tail = this.tail
     if (tail === null) {
-      this.tail = entry
       this.head = entry
     } else {
       ;(tail as any)[nextSymbol] = entry
-      this.tail = (tail as any)[nextSymbol]
     }
+    this.tail = entry
     ;(entry as any)[nextSymbol] = null
     ++this.size
 

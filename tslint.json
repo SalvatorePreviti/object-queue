@@ -1,6 +1,8 @@
 {
   "extends": ["tslint:latest", "tslint-microsoft-contrib", "tslint-config-prettier"],
   "rules": {
+    "no-dynamic-delete": false,
+    "no-null-keyword": false,
     "missing-jsdoc": false,
     "export-name": false,
     "function-name": false,

@@ -1,6 +1,6 @@
 {
   "name": "object-queue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Object queue",
   "main": "index.js",
   "types": "index.d.ts",
@@ -21,7 +21,7 @@
     "url": "git+https://github.com/SalvatorePreviti/object-queue.git"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=7.6.0"
   },
   "author": "Salvatore Previti",
   "license": "ISC",
@@ -30,22 +30,22 @@
   },
   "homepage": "https://github.com/SalvatorePreviti/object-queue#readme",
   "devDependencies": {
-    "@types/jest": "^23.1.4",
-    "@types/node": "^10.5.1",
-    "chalk": "^2.4.1",
-    "documentation": "^8.0.0",
-    "eslint": "^5.0.1",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jest": "^21.17.0",
-    "eslint-plugin-node": "^6.0.1",
-    "globby": "^8.0.1",
-    "jest": "^23.3.0",
-    "prettier": "^1.13.7",
-    "ts-jest": "^23.0.0",
-    "tslint": "^5.10.0",
-    "tslint-config-prettier": "^1.13.0",
-    "tslint-microsoft-contrib": "^5.0.3",
-    "typescript": "^2.9.2"
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.9.6",
+    "chalk": "^2.4.2",
+    "documentation": "^9.3.0",
+    "eslint": "^5.14.1",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "^22.3.0",
+    "eslint-plugin-node": "^8.0.1",
+    "globby": "^9.0.0",
+    "jest": "^24.1.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^24.0.0",
+    "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-microsoft-contrib": "^6.0.0",
+    "typescript": "^3.3.3333"
   }
 }
